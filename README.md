@@ -1,2 +1,2 @@
 # LP_Project1
-Projeto para a disciplina de Linguagem de Programação, do curo de Ciência da Computação - UTFPR campus Campo Mourão. O projeto consiste em  modelo de jogo text adventure, realizado na linguagem Dart
+Projeto para a disciplina de Linguagem de Programação, do curso de Ciência da Computação da UTFPR - Campus Campo Mourão. O projeto consiste em um jogo no modelo Text Adventure, realizado na linguagem Dart.
