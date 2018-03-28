@@ -30,8 +30,6 @@ void printHistory(){
                 sua casa, mas estava toda em tons de rosa, roxo e azul claro, bastante psicodélico. Decidiu,
                 então, explorar aquele novo mundo.
                      ''';
-
-  stdout.writeln('                                  *_____________The Bill Journey_____________*\n');
   print(introduction);
 
   String op = showOptions(); //pesquisar p mudar este tipo, ver se tem um com abrangência menor que uma string. Não pode ser var, pois função não pode ser var

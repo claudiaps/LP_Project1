@@ -1,12 +1,17 @@
 import 'dart:io';
-import 'dart:async';
 
 export 'scenesControl.dart';
 
 String menu(){
+  stdout.writeln('                                  *_____________The Bill Journey_____________*\n');
   var showMenu = '''
-    P - Play
-    Q - Quit
-                 ''';//add o resto das opcoes depois. Ainda está feio o jeito que está aparecendo, arrumar isso depois pq agora não dá tempo
+                                                New Game (N)
+                                                Load **arquivo** 
+                                                Save **arquivo**
+                                                Help (H)
+                 ''';
   print(showMenu);
+  String op = stdin.readLineSync();
+  
+  return op;
 }
