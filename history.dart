@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:async';
+//import 'dart:async';
 
 export 'history.dart';
 
@@ -53,6 +53,7 @@ void printHistory(){
 
 String showOptions(){
   stdout.writeln('Continuar? (S, para Sim/N, para Não)');
+  stdout.write("/> ");
   String proceed = stdin.readLineSync();
 
   return proceed;

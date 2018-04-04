@@ -11,6 +11,7 @@ String menu(){
                                                 Help (H)
                  ''';
   print(showMenu);
+  stdout.write("/> ");
   String op = stdin.readLineSync();
   
   return op;
