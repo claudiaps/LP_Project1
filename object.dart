@@ -1,6 +1,6 @@
 export 'object.dart';
 
-class object{
+class Object{
   int idObject; //id do objeto
   int type; //tipo do objeto
   String objectName; //nome do objeto
@@ -12,22 +12,7 @@ class object{
   bool solved; //cena já resolvida?
   bool got; //objeto já obtido? (inventario)
 
-  object.ints(int idObject, int type, int targetScene){
-    this.idObject    = idObject;
-    this.type        = type;
-    this.targetScene = targetScene;
-  }
+  Object (this.idObject, this.type, this.objectName, this.objectDescription, this.positiveResult,this.negativeResult, this.correctCommand, this.targetScene, this.got, this.solved){
 
-  object.strings(String objectName, String objectDescription, String positiveResult, String negativeResult, String correctCommand){
-    this.objectName        = objectName;
-    this.objectDescription = objectDescription;
-    this.positiveResult    = positiveResult;
-    this.negativeResult    = negativeResult;
-    this.correctCommand    = correctCommand;
-  }
-
-  object.bools(bool solved, bool got){
-    this.solved = solved;
-    this.got    = got;
   }
 }
