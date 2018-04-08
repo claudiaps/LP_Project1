@@ -1,5 +1,9 @@
 export 'inventory.dart';
 
-class inventory{
-  //mesmo vetor de objetos que esta em scene, ver como chamar aqui
+class Inventory{
+  var inventario = new List();
+
+  add_inventory(Object objeto){
+    this.inventario.add(objeto);
+  }
 }

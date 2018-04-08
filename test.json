@@ -1,12 +1,24 @@
 {
-    "idObject": 1,
-    "type":"teste",
-    "objectName": "llala",
-    "objectDescription": "teste do lalala",
-    "positiveResult": "asjdasd",
-    "negativeResult": "dsasdsad",
-    "correctCommand": "lalalaslas",
-    "targetScene": 2,
-    "solved": true,
-    "got": false
+    "current_scene":0,
+    "scenes":[ 
+        {
+            "idScene":0,
+            "title":"who cares",
+            "description":"i don't give a shit",
+            "objects": [
+                {
+                    "idObject": 1,
+                    "type":"teste",
+                    "objectName": "llala",
+                    "objectDescription": "teste do lalala",
+                    "positiveResult": "asjdasd",
+                    "negativeResult": "dsasdsad",
+                    "correctCommand": "lalalaslas",
+                    "targetScene": 2,
+                    "solved": true,
+                    "got": false
+                }
+            ]
+        }
+    ]
 }

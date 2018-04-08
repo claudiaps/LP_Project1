@@ -15,4 +15,5 @@ class Object{
   Object (this.idObject, this.type, this.objectName, this.objectDescription, this.positiveResult,this.negativeResult, this.correctCommand, this.targetScene, this.got, this.solved){
 
   }
+
 }
