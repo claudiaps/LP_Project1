@@ -63,6 +63,17 @@ class Game {
       exit_game();
     } else if (texto[0] == 'get') {
       get_command(texto[1]);
+    } else if (texto[0] == 'check') {
+      check_command(texto[1]);
+    } else if (texto[0] == 'use') {
+      if (is_object(texto[1])) {
+        use_command(texto[1]);
+        // if (texto[2] == 'with') {
+        //   use_with_command(texto[1], texto[3]);
+        // } else if (texto[2] == null) {
+        //   use_command(texto[1]);
+        // }
+      }
     }
   }
 
@@ -74,14 +85,52 @@ class Game {
   get_command(String item) {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName && object.type == 1) {
-        inventory.add(item);
-        object.got = true;
-        print("Item adicionado ao inventário");
+        if (object.got == true) {
+          print("\nItem já obtido querido\n");
+        } else {
+          inventory.add(item);
+          object.got = true;
+          print("\nItem $item adicionado ao inventário\n");
+        }
       } else {
-        print("Sorry migo, comando errado");
+        print("\nSorry migo, tu não pode colocar esse trem no inventário\n");
       }
     }
   }
 
+  check_command(String item) {
+    for (var object in scenes[currentScene].objects) {
+      if (item == object.objectName) {
+        print("");
+        print(object.objectDescription);
+        print("");
+      } else {
+        print("\nMigo, não tem esse item ae não\n");
+      }
+    }
+  }
 
+  is_object(String item) {
+    for (var object in scenes[currentScene].objects) {
+      if (item == object.objectName) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  use_command(String item) {
+    for (var object in scenes[currentScene].objects) {
+      if (object.type == 0 && object.correctCommand == 'use $item') {
+        print(object.positiveResult);
+        object.solved = true;
+        currentScene = object.targetScene;
+      } else {
+        print(object.negativeResult);
+      }
+    }
+  }
+
+  use_with_command(String item, String scene_item) {}
 }

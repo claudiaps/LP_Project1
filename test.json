@@ -1,21 +1,40 @@
 {
-    "current_scene":0,
-    "scenes":[ 
+    "current_scene": 0,
+    "scenes": [
         {
-            "idScene":0,
-            "title":"who cares",
-            "description":"i don't give a shit, but maybe it is a good idea get this STONE for you. I don't know. If you want to kill yourself, maybe that could be a good way",
+            "idScene": 0,
+            "title": "who cares",
+            "description": "i don't give a shit, but maybe it is a good idea get this STONE for you. I don't know. If you want to kill yourself, maybe that could be a good way",
             "objects": [
                 {
                     "idObject": 1,
-                    "type":1,
+                    "type": 0,
                     "objectName": "lala",
+                    "objectDescription": "teste do lalala",
+                    "positiveResult": "deu bom",
+                    "negativeResult": "nem rolou",
+                    "correctCommand": "use lala",
+                    "targetScene": 1,
+                    "solved": false,
+                    "got": false
+                }
+            ]
+        },
+        {
+            "idScene": 1,
+            "title": "who cares2",
+            "description": "i don't give a shit, but maybe it is a good idea get this STONE for you. I don't know. If you want to kill yourself, maybe that could be a good way2",
+            "objects": [
+                {
+                    "idObject": 1,
+                    "type": 1,
+                    "objectName": "lala2",
                     "objectDescription": "teste do lalala",
                     "positiveResult": "asjdasd",
                     "negativeResult": "dsasdsad",
                     "correctCommand": "lalalaslas",
                     "targetScene": 2,
-                    "solved": true,
+                    "solved": false,
                     "got": false
                 }
             ]
