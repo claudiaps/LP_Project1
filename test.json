@@ -4,12 +4,12 @@
         {
             "idScene":0,
             "title":"who cares",
-            "description":"i don't give a shit",
+            "description":"i don't give a shit, but maybe it is a good idea get this STONE for you. I don't know. If you want to kill yourself, maybe that could be a good way",
             "objects": [
                 {
                     "idObject": 1,
-                    "type":"teste",
-                    "objectName": "llala",
+                    "type":1,
+                    "objectName": "lala",
                     "objectDescription": "teste do lalala",
                     "positiveResult": "asjdasd",
                     "negativeResult": "dsasdsad",

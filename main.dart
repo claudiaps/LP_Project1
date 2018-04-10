@@ -1,17 +1,20 @@
 import 'dart:io';
-// import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 
 import 'history.dart';
 import 'scenesControl.dart';
 import 'object.dart';
-import 'inventory.dart';
 import 'game.dart';
 
-void main() {
-  var game = new Game('test.json');
+// teste(game) => new Future((Game game) => {});
+
+Future main() async {
+  var game = await new Game();
+  // game.initClass('test.json');
   printHistory();
-  while (true) {
-    game.read_line();
-  }
+  // while (game.currentScene == null);
+  // while (true) {
+  //   game.play();
+  // }
 }

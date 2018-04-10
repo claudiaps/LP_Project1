@@ -12,8 +12,6 @@ class Object{
   bool solved; //cena já resolvida?
   bool got; //objeto já obtido? (inventario)
 
-  Object (this.idObject, this.type, this.objectName, this.objectDescription, this.positiveResult,this.negativeResult, this.correctCommand, this.targetScene, this.got, this.solved){
-
-  }
+  Object (this.idObject, this.type, this.objectName, this.objectDescription, this.positiveResult,this.negativeResult, this.correctCommand, this.targetScene, this.got, this.solved);
 
 }

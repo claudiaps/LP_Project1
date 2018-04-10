@@ -1,6 +1,7 @@
 import 'dart:io';
 
 export 'scenesControl.dart';
+import 'game.dart';
 
 String menu(){
   stdout.writeln('                                  *_____________The Bill\'s Journey_____________*\n');
@@ -33,5 +34,6 @@ exit_game() {
   } else {
     return;
   }
+  
 }
 

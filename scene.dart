@@ -7,5 +7,5 @@ class Scene {
   var objects = new List(); //vetor de objetos
 
 
-  Scene(this.idScene, this.description, this.objects, this.sceneTitle) {}
+  Scene(this.idScene, this.description, this.objects, this.sceneTitle);
 }

@@ -49,7 +49,7 @@ void printHistory() {
         print('tchau');
       else
         print('bb, não vale essa letra');
-    } else if (proceed == 'N' || proceed == 'n')
+    } else if (op == 'N' || op == 'n')
       print('Tchau, então');
     else
       print('Querido(a), esta letra não vale');
