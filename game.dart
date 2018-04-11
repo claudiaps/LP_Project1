@@ -2,10 +2,10 @@ import 'scene.dart'; //jogo -> cena -> objeto (pode estar associado ao inventari
 import 'object.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:args/args.dart';
-import 'history.dart';
+// import 'package:args/args.dart';
+// import 'history.dart';
 import 'scenesControl.dart';
-import 'dart:async';
+// import 'dart:async';
 
 export 'game.dart';
 
@@ -46,7 +46,10 @@ class Game {
       }
       while (true) {
         play();
-        read_line();
+        var current = currentScene;
+        while (current == currentScene) {
+          read_line();
+        }
       }
     });
   }
@@ -61,18 +64,36 @@ class Game {
       printHelp();
     } else if (texto[0] == 'exit') {
       exit_game();
-    } else if (texto[0] == 'get') {
-      get_command(texto[1]);
-    } else if (texto[0] == 'check') {
-      check_command(texto[1]);
-    } else if (texto[0] == 'use') {
-      if (is_object(texto[1])) {
-        use_command(texto[1]);
-        // if (texto[2] == 'with') {
-        //   use_with_command(texto[1], texto[3]);
-        // } else if (texto[2] == null) {
-        //   use_command(texto[1]);
-        // }
+    } else if (texto[0] == 'inventory') {
+      inventory_command();
+    }
+    if (texto.length == 2 || texto.length == 4) {
+      if (texto[0] == 'get') {
+        get_command(texto[1]);
+      }
+      if (texto[0] == 'check') {
+        check_command(texto[1]);
+      } else if (texto[0] == 'use') {
+        if (texto.length == 2) {
+          if (is_object(texto[1])) {
+            use_command(texto[1]);
+          } else {
+            print(
+                "\nObjeto inválido. Tente objetos da cenas, ou se desejar algum de seu inventário, consulte o mesmo com o comando INVENTORY\n");
+          }
+        } else if (texto.length == 4) {
+          if (texto[2] == 'with') {
+            if (is_inventory(texto[1]) && is_object(texto[3])) {
+              use_with_command(texto[1], texto[3]);
+            } else {
+              print(
+                  "Colega, os objetos não estão com o nome correto, ou não estão nessa cena / inventário. Tenta outra coisa");
+            }
+          } else {
+            print(
+                "Comado errado. Provavelmente não seguiu o padrão USE ______ WITH_____, ou o nome dos objetos estão errados");
+          }
+        }
       }
     }
   }
@@ -84,18 +105,19 @@ class Game {
 
   get_command(String item) {
     for (var object in scenes[currentScene].objects) {
-      if (item == object.objectName && object.type == 1) {
-        if (object.got == true) {
-          print("\nItem já obtido querido\n");
-        } else {
-          inventory.add(item);
-          object.got = true;
-          print("\nItem $item adicionado ao inventário\n");
+      if (item == object.objectName) {
+        if (object.type == 1) {
+          if (object.got == true) {
+            print("\nItem já obtido querido\n");
+          } else {
+            inventory.add(item);
+            object.got = true;
+            print("\nItem $item adicionado ao inventário\n");
+          }
         }
-      } else {
-        print("\nSorry migo, tu não pode colocar esse trem no inventário\n");
       }
     }
+    print("Não pode colocar esse objeto no inventário, ou esse obejto não existe. Tenta outro ai");
   }
 
   check_command(String item) {
@@ -114,23 +136,56 @@ class Game {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName) {
         return true;
-      } else {
-        return false;
       }
     }
+    return false;
+  }
+
+  is_inventory(String item) {
+    for (var key in inventory) {
+      if (item == key) {
+        return true;
+      }
+    }
+    return false;
   }
 
   use_command(String item) {
     for (var object in scenes[currentScene].objects) {
-      if (object.type == 0 && object.correctCommand == 'use $item') {
-        print(object.positiveResult);
-        object.solved = true;
-        currentScene = object.targetScene;
-      } else {
-        print(object.negativeResult);
+      if (object.objectName == item) {
+        if (object.type == 0 && object.correctCommand == 'use $item') {
+          print(object.positiveResult);
+          object.solved = true;
+          currentScene = object.targetScene;
+        } else {
+          print(object.negativeResult);
+        }
       }
     }
   }
 
-  use_with_command(String item, String scene_item) {}
+  inventory_command() {
+    if (inventory.length == 0) {
+      print("\nInventário vazio!");
+    } else {
+      print(inventory);
+    }
+  }
+
+  use_with_command(String item, String scene_item) {
+    for (var object in scenes[currentScene].objects) {
+      if (object.objectName == scene_item && object.type == 0) {
+        if (object.correctCommand == 'use $item with $scene_item') {
+          object.solved = true;
+          print(object.positiveResult);
+          currentScene = object.targetScene;
+          inventory.remove(item);
+        } else {
+          print("comando errado");
+        }
+      }
+    }
+  }
+
+  
 }

@@ -21,7 +21,7 @@ String menu(){
 
 printHelp() {
   print(
-      "Para jogar Bill's Journey, basta associar os objetos das cenas com a cena. Ou objetos do seu inventário aos da cena.\nOs comandos são: \n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um obejto do inventário com um da cena \n  EXIT: sair do jogo \n  SAVE: Salvar o jogo \n");
+      "Para jogar Bill's Journey, basta associar os objetos das cenas com a cena. Ou objetos do seu inventário aos da cena.\nOs comandos são: \n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um obejto do inventário com um da cena \n INVENTORY: exibir itens do inventário \n  EXIT: sair do jogo \n  SAVE: Salvar o jogo \n");
 }
 
 exit_game() {

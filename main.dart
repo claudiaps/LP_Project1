@@ -12,7 +12,7 @@ import 'game.dart';
 Future main() async {
   var game = await new Game();
   // game.initClass('test.json');
-  printHistory();
+  //printHistory();
   // while (game.currentScene == null);
   // while (true) {
   //   game.play();
