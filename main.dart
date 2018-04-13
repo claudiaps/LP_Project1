@@ -10,11 +10,7 @@ import 'game.dart';
 // teste(game) => new Future((Game game) => {});
 
 Future main() async {
+  // menu();
   var game = await new Game();
-  // game.initClass('test.json');
-  //printHistory();
-  // while (game.currentScene == null);
-  // while (true) {
-  //   game.play();
-  // }
+
 }

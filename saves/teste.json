@@ -1,0 +1,32 @@
+{
+    "cenaAtual": 0,
+    "inventario": [
+        "lala"
+    ],
+    "objetosCena": [
+        {
+            "idObject": 1,
+            "type": 1,
+            "objectName": "lala",
+            "objectDescription": "teste do lalala",
+            "positiveResult": "deu bom",
+            "negativeResult": "nem rolou",
+            "correctCommand": " ",
+            "targetScene": 1,
+            "solved": false,
+            "got": true
+        },
+        {
+            "idObject": 2,
+            "type": 0,
+            "objectName": "haha",
+            "objectDescription": "teste do haha",
+            "positiveResult": "deu bom haha",
+            "negativeResult": "nem rolou haha",
+            "correctCommand": "use lala with haha",
+            "targetScene": 1,
+            "solved": false,
+            "got": false
+        }
+    ]
+}

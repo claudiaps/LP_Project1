@@ -1,0 +1,18 @@
+{
+    "cenaAtual": 1,
+    "inventario": [],
+    "objetosCena": [
+        {
+            "idObject": 1,
+            "type": 1,
+            "objectName": "lala2",
+            "objectDescription": "teste do lalala",
+            "positiveResult": "asjdasd",
+            "negativeResult": "dsasdsad",
+            "correctCommand": "lalalaslas",
+            "targetScene": 2,
+            "solved": false,
+            "got": false
+        }
+    ]
+}
