@@ -1,16 +1,11 @@
-import 'dart:io';
-import 'dart:async';
-import 'dart:convert';
-
-import 'history.dart';
-import 'scenesControl.dart';
-import 'object.dart';
+/**
+ * Start the Music (Linux with Sox Player):
+ *  nohup play ambiance.wav repeat 999 > /dev/null & dart main.dart && play -q stop.wav trim 0 2
+ * play -q ambiance.wav repeat 999 > /dev/null & dart main.dart && play -q stop.wav trim 0 2
+ * Ainda não funciona o parar a música, tem que matar o processo.
+ */
 import 'game.dart';
 
-// teste(game) => new Future((Game game) => {});
-
-Future main() async {
-  // menu();
-  var game = await new Game();
-
+void main(){
+  new Game();
 }

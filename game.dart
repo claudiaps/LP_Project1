@@ -1,35 +1,33 @@
-import 'scene.dart'; //jogo -> cena -> objeto (pode estar associado ao inventario)
-import 'object.dart';
 import 'dart:convert';
 import 'dart:io';
-// import 'package:args/args.dart';
-// import 'history.dart';
+
+import 'scene.dart';
+import 'object.dart';
 import 'scenesControl.dart';
-// import 'dart:async';
 
 export 'game.dart';
 
 class Game {
-  var scenes =
-      new List(); //cria vetor para armazenar cenas, as quais são indexadas por id.
+  var scenes = new List(); //cria vetor para armazenar cenas, as quais são indexadas por id.
   int currentScene;
   var inventory = new List();
 
-  //function to inicialize the game. This one passs the JSON file to the class
+  /*Função para inicializar o jogo. Essa função passa o arquivo JSON para a classe*/
   Game() {
     initClass("test.json");
   }
 
+  /*Função responsável por iniciar a classe. */
   initClass(String path) {
-    var command = menu();
+    var command = menu(); //Armazena a opção retornada da função "menu" do arquivo scenesControl
     new File(path)
         .readAsString()
-        .then((fileContents) => JSON.decode(fileContents))
+        .then((fileContents) => JSON.decode(fileContents)) //Lê o arquivo com as cenas do jogo e suas informações
         .then((jsonData) {
-      currentScene = jsonData["current_scene"];
-      for (var scene in jsonData["scenes"]) {
+      currentScene = jsonData["current_scene"]; //Identifica a cena atual
+      for (var scene in jsonData["scenes"]) { //Percorre cada cena
         var itens = new List();
-        for (var object in scene["objects"]) {
+        for (var object in scene["objects"]) { //Extrai os dados de cada objeto da cena em questão
           itens.add(new Object(
               object["idObject"],
               object["type"],
@@ -45,7 +43,7 @@ class Game {
         scenes.add(new Scene(
             scene["idScene"], scene["description"], itens, scene["title"]));
       }
-      if (command == 'new') {
+      if (command == 'new') { //Inicia um novo jogo
         while (true) {
           var current = currentScene;
           play();
@@ -55,14 +53,14 @@ class Game {
         }
       }
     });
-    if (command == 'load') {
-      stdout.write("Digite o nome com a qual salvou o jogo que deseja retomar");
+    if (command == 'load') { //Lê um jogo previamente salvo
+      stdout.write("Digite o nome do jogo salvo que deseja retomar:");
       stdout.write("/> ");
       String save = stdin.readLineSync();
 
       new File('saves/$save.json')
           .readAsString()
-          .then((fileContents) => JSON.decode(fileContents))
+          .then((fileContents) => JSON.decode(fileContents)) //Lê o arquivo com base no nome passado
           .then((jsonData) {
         currentScene = jsonData["cenaAtual"];
         inventory = jsonData["inventario"];
@@ -88,11 +86,12 @@ class Game {
           }
         }
       });
-    } else if (command == 'help') {
+    } else if (command == 'help') { //Se não for novo jogo, nem leitura, mostra-se a ajuda
       printHelp();
     }
   }
 
+/*Função que faz a verificação dos comandos passados pelo usuário*/
   read_line() {
     stdout.write("\> ");
     var texto = new List();
@@ -108,7 +107,7 @@ class Game {
     } else if (texto[0] == 'save') {
       save_command();
     }
-    if (texto.length == 2 || texto.length == 4) {
+    if (texto.length == 2 || texto.length == 4) { //Verifica se é "use OBJETO" ou "use OBJETO1 WITH OBJETO2"
       if (texto[0] == 'get') {
         get_command(texto[1]);
       }
@@ -120,7 +119,7 @@ class Game {
             use_command(texto[1]);
           } else {
             print(
-                "\nObjeto inválido. Tente objetos da cenas, ou se desejar algum de seu inventário, consulte o mesmo com o comando INVENTORY\n");
+                "\nHumm.. Não conheço esse objeto. Tente outro.\n");
           }
         } else if (texto.length == 4) {
           if (texto[2] == 'with') {
@@ -128,42 +127,45 @@ class Game {
               use_with_command(texto[1], texto[3]);
             } else {
               print(
-                  "Colega, os objetos não estão com o nome correto, ou não estão nessa cena / inventário. Tenta outra coisa");
+                  "Esses objetos estão estranhos... Tente novamente!");
             }
           } else {
             print(
-                "Comado errado. Provavelmente não seguiu o padrão USE ______ WITH_____, ou o nome dos objetos estão errados");
+                "Comando incorreto");
           }
         }
       }
     }
   }
 
+  /*Função para exibir a descrição da cena*/
   play() {
     print(this.scenes[this.currentScene].description);
     return 0;
   }
 
+  /*Função que controla a adição de determinado objeto ao inventário*/
   get_command(String item) {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName) {
         if (object.type == 1) {
           if (object.got == true) {
-            print("\nItem já obtido querido\n");
+            print("\nItem já obtido\n");
             return;
           } else {
             inventory.add(item);
             object.got = true;
-            print("\nItem $item adicionado ao inventário\n");
+            print("\n$item adicionado ao inventário\n");
             return;
           }
         }
       }
     }
     print(
-        "Não pode colocar esse objeto no inventário, ou esse obejto não existe. Tenta outro ai");
+        "Esse objeto está esquisito... Tente novamente!");
   }
 
+  /*Função para verificar se determinado objeto passado pelo usuário existe na cena*/
   check_command(String item) {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName) {
@@ -171,11 +173,12 @@ class Game {
         print(object.objectDescription);
         print("");
       } else {
-        print("\nMigo, não tem esse item ae não\n");
+        print("\nOps! Este objeto não existe!\n");
       }
     }
   }
 
+  /*Função auxiliar que verifica se um objeto está na cena*/
   is_object(String item) {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName) {
@@ -185,6 +188,7 @@ class Game {
     return false;
   }
 
+  /*Função auxiliar que verifica se um objeto já está no inventário*/
   is_inventory(String item) {
     for (var key in inventory) {
       if (item == key) {
@@ -194,6 +198,7 @@ class Game {
     return false;
   }
 
+  /*Função que controla o uso de determinado objeto*/
   use_command(String item) {
     for (var object in scenes[currentScene].objects) {
       if (object.objectName == item) {
@@ -208,6 +213,7 @@ class Game {
     }
   }
 
+  /*Função para mostrar o conteúdo do inventário*/
   inventory_command() {
     if (inventory.length == 0) {
       print("\nInventário vazio!");
@@ -216,6 +222,7 @@ class Game {
     }
   }
 
+  /*Função que controla o uso de determinado objeto com outro objeto */
   use_with_command(String item, String scene_item) {
     for (var object in scenes[currentScene].objects) {
       if (object.objectName == scene_item && object.type == 0) {
@@ -225,14 +232,15 @@ class Game {
           currentScene = object.targetScene;
           inventory.remove(item);
         } else {
-          print("comando errado");
+          print("Comando incorreto!");
         }
       }
     }
   }
 
+  /*Função para salvar o jogo*/
   save_command() {
-    stdout.write("/> Digite o nome com a qual deseja salvar o jogo \n/>");
+    stdout.write("/> Digite o nome com o qual deseja salvar o jogo: \n/>");
     String save_name = stdin.readLineSync();
     var save = new Map();
     save['cenaAtual'] = currentScene;
@@ -260,28 +268,19 @@ class Game {
     new File('saves/$save_name.json').writeAsStringSync(JSON.encode(save));
   }
 
-  // command() {
-  //   var command = menu();
-  //   if (command == 'new') {
-  //     initClass('test.json');
-  //   } else if (command == 'load') {
-  //     load_command();
-  //   } else if (command == 'help') {
-  //     printHelp();
-  //   }
-  // }
-
+  /*Função para exibir a ajuda*/
   printHelp() {
     print(
-        "Para jogar Bill's Journey, basta associar os objetos das cenas com a cena. Ou objetos do seu inventário aos da cena.\nOs comandos são: \n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um obejto do inventário com um da cena \n INVENTORY: exibir itens do inventário \n  EXIT: sair do jogo \n  SAVE: Salvar o jogo \n");
+        "Para jogar Bill's Journey, basta associar os objetos certos com cada cena ou objetos do seu inventário com a cena.\nOs comandos são: \n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um objeto do inventário com um da cena \n INVENTORY: Exibir itens do inventário \n  EXIT: Sair do jogo \n  SAVE: Salvar o jogo \n");
   }
 
+  /*Função que controla a desistência no jogo*/
   exit_game() {
-    stdout.write("Deseja nos abandonar? Todo progresso não salvo será perdido");
-    stdout.write("/> ");
+    stdout.write("Deseja mesmo sair agora? Todo progresso não salvo será perdido...");
+    stdout.write("\n/> ");
     String get_out = stdin.readLineSync();
     if (get_out == "S" || get_out == 's') {
-      print('Okay, até mais');
+      print('Jogo encerrado.');
       exit(0);
     } else {
       return;
