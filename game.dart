@@ -21,16 +21,15 @@ class Game {
   initClass(String path) {
     initialPrint();
     String command = menu();
-    command = command.toLowerCase();
     while (command != 'new' && command != 'load') {
-      command =
-          menu(); //Armazena a opção retornada da função "menu" do arquivo scenesControl
       if (command == 'help') {
         printHelp();
       } else {
         print(
             "\n Comando errado ou indisponível no momento, tente new, load ou help\n");
       }
+      command =
+          menu(); //Armazena a opção retornada da função "menu" do arquivo scenesControl
     }
     new File(path)
         .readAsString()
@@ -112,7 +111,8 @@ class Game {
           }
         }
       }).catchError((e) {
-        print("Arquivo com nome errado. Inicie o jogo de novo, e digite o nome do save correto");
+        print(
+            "Arquivo com nome errado. Inicie o jogo de novo, e digite o nome do save correto");
         return;
       }); //Lê o arquivo com base no nome passado
     }
@@ -319,7 +319,7 @@ class Game {
   /*Função para exibir a ajuda*/
   printHelp() {
     print(
-        "\nPara jogar Bill's Journey, basta associar os objetos certos com cada cena ou objetos do seu inventário com a cena.\nOs comandos para jogar são: \n\n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um objeto do inventário com um da cena \n INVENTORY: Exibir itens do inventário \n  EXIT: Sair do jogo \n  SAVE: Salvar o jogo \n\nAo iniciar o jogo, você tem algumas opições: Iniciar um jogo novo (comando NEW) ou carregar um jogo já salvo (comando LOAD). A função de LOAD só está disponível no início do jogo");
+        "\nPara jogar Bill's Journey, basta associar os objetos certos com cada cena ou objetos do seu inventário com a cena.\nOs comandos para jogar são (não importa se as letras estão maiúsculo ou minúsculo): \n\n  USE: Usar um objeto \n  GET: Colocar um objeto em seu inventário \n  DESCRIPTION: Descrição do objeto \n  USE ___ WITH ____: Usar um objeto do inventário com um da cena \n  INVENTORY: Exibir itens do inventário \n  EXIT: Sair do jogo \n  SAVE: Salvar o jogo \n\nAo iniciar o jogo, você tem algumas opições: Iniciar um jogo novo (comando NEW) ou carregar um jogo já salvo (comando LOAD). A função de LOAD só está disponível no início do jogo");
   }
 
   /*Função que controla a desistência no jogo*/

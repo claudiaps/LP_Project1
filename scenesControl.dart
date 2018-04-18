@@ -6,6 +6,7 @@ export 'scenesControl.dart';
 String menu() {
   stdout.write("/> ");
   String op = stdin.readLineSync();
+  op = op.toLowerCase();
 
   return op; //retorna a opção lida e manda para a class game.
 }
