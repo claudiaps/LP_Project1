@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'scene.dart';
 import 'object.dart';
 import 'scenesControl.dart';
@@ -8,7 +7,8 @@ import 'scenesControl.dart';
 export 'game.dart';
 
 class Game {
-  var scenes = new List(); //cria vetor para armazenar cenas, as quais são indexadas por id.
+  var scenes =
+      new List(); //cria vetor para armazenar cenas, as quais são indexadas por id.
   int currentScene;
   var inventory = new List();
 
@@ -19,15 +19,29 @@ class Game {
 
   /*Função responsável por iniciar a classe. */
   initClass(String path) {
-    var command = menu(); //Armazena a opção retornada da função "menu" do arquivo scenesControl
+    initialPrint();
+    String command = menu();
+    print(command);
+    while (command != 'new' && command != 'load') {
+      command =
+          menu(); //Armazena a opção retornada da função "menu" do arquivo scenesControl
+      if (command == 'help') {
+        printHelp();
+      } else {
+        print("\n Comando errado, tente new, load ou help\n");
+      }
+    }
     new File(path)
         .readAsString()
-        .then((fileContents) => JSON.decode(fileContents)) //Lê o arquivo com as cenas do jogo e suas informações
+        .then((fileContents) => JSON.decode(
+            fileContents)) //Lê o arquivo com as cenas do jogo e suas informações
         .then((jsonData) {
       currentScene = jsonData["current_scene"]; //Identifica a cena atual
-      for (var scene in jsonData["scenes"]) { //Percorre cada cena
+      for (var scene in jsonData["scenes"]) {
+        //Percorre cada cena
         var itens = new List();
-        for (var object in scene["objects"]) { //Extrai os dados de cada objeto da cena em questão
+        for (var object in scene["objects"]) {
+          //Extrai os dados de cada objeto da cena em questão
           itens.add(new Object(
               object["idObject"],
               object["type"],
@@ -43,24 +57,32 @@ class Game {
         scenes.add(new Scene(
             scene["idScene"], scene["description"], itens, scene["title"]));
       }
-      if (command == 'new') { //Inicia um novo jogo
+
+      if (command == 'new') {
+        //Inicia um novo jogo
+        printStory();
         while (true) {
           var current = currentScene;
           play();
           while (current == currentScene) {
             read_line();
           }
+          if (currentScene == 13) {
+            end_game();          }
         }
       }
     });
-    if (command == 'load') { //Lê um jogo previamente salvo
+
+    if (command == 'load') {
+      //Lê um jogo previamente salvo
       stdout.write("Digite o nome do jogo salvo que deseja retomar:");
       stdout.write("/> ");
       String save = stdin.readLineSync();
 
       new File('saves/$save.json')
           .readAsString()
-          .then((fileContents) => JSON.decode(fileContents)) //Lê o arquivo com base no nome passado
+          .then((fileContents) =>
+              JSON.decode(fileContents)) //Lê o arquivo com base no nome passado
           .then((jsonData) {
         currentScene = jsonData["cenaAtual"];
         inventory = jsonData["inventario"];
@@ -84,64 +106,78 @@ class Game {
           while (current == currentScene) {
             read_line();
           }
+          if (currentScene == 13) {
+            end_game();
+          }
         }
       });
-    } else if (command == 'help') { //Se não for novo jogo, nem leitura, mostra-se a ajuda
-      printHelp();
     }
   }
 
 /*Função que faz a verificação dos comandos passados pelo usuário*/
   read_line() {
+    print('');
     stdout.write("\> ");
-    var texto = new List();
     String text = stdin.readLineSync();
+    text = text.toLowerCase();
+    var texto = new List();
     texto = text.split(" ");
 
     if (texto[0] == 'help') {
       printHelp();
+      return;
     } else if (texto[0] == 'exit') {
       exit_game();
+      return;
     } else if (texto[0] == 'inventory') {
       inventory_command();
+      return;
     } else if (texto[0] == 'save') {
       save_command();
+      return;
     }
-    if (texto.length == 2 || texto.length == 4) { //Verifica se é "use OBJETO" ou "use OBJETO1 WITH OBJETO2"
+    if (texto.length == 2 || texto.length == 4) {
+      //Verifica se é "use OBJETO" ou "use OBJETO1 WITH OBJETO2"
       if (texto[0] == 'get') {
         get_command(texto[1]);
+        return;
       }
       if (texto[0] == 'check') {
         check_command(texto[1]);
+        return;
       } else if (texto[0] == 'use') {
         if (texto.length == 2) {
           if (is_object(texto[1])) {
             use_command(texto[1]);
+            return;
           } else {
-            print(
-                "\nHumm.. Não conheço esse objeto. Tente outro.\n");
+            print("Humm.. Não conheço esse objeto. Tente outro.");
+            return;
           }
         } else if (texto.length == 4) {
           if (texto[2] == 'with') {
             if (is_inventory(texto[1]) && is_object(texto[3])) {
               use_with_command(texto[1], texto[3]);
+              return;
             } else {
-              print(
-                  "Esses objetos estão estranhos... Tente novamente!");
+              print("Esses objetos estão estranhos... Tente novamente!");
+              return;
             }
           } else {
-            print(
-                "Comando incorreto");
+            print("Comando incorreto");
+            return;
           }
         }
       }
     }
+    print('Comando errado, tenta outro');
   }
 
   /*Função para exibir a descrição da cena*/
   play() {
-    print(this.scenes[this.currentScene].description);
-    return 0;
+    print('');
+    print(scenes[currentScene].description);
+    return;
   }
 
   /*Função que controla a adição de determinado objeto ao inventário*/
@@ -155,27 +191,27 @@ class Game {
           } else {
             inventory.add(item);
             object.got = true;
-            print("\n$item adicionado ao inventário\n");
+            print("$item adicionado ao inventário\n");
             return;
           }
         }
       }
     }
     print(
-        "Esse objeto está esquisito... Tente novamente!");
+        "Desculpe, mas não da pra colocar esse objeto no inventário. Tenta de novo!");
   }
 
   /*Função para verificar se determinado objeto passado pelo usuário existe na cena*/
   check_command(String item) {
     for (var object in scenes[currentScene].objects) {
       if (item == object.objectName) {
-        print("");
+        // print("");
         print(object.objectDescription);
-        print("");
-      } else {
-        print("\nOps! Este objeto não existe!\n");
+        // print("");
+        return;
       }
     }
+    print("\nOps! Este objeto não existe!\n");
   }
 
   /*Função auxiliar que verifica se um objeto está na cena*/
@@ -206,8 +242,10 @@ class Game {
           print(object.positiveResult);
           object.solved = true;
           currentScene = object.targetScene;
+          return;
         } else {
           print(object.negativeResult);
+          return;
         }
       }
     }
@@ -232,7 +270,7 @@ class Game {
           currentScene = object.targetScene;
           inventory.remove(item);
         } else {
-          print("Comando incorreto!");
+          print(object.negativeResult);
         }
       }
     }
@@ -264,7 +302,7 @@ class Game {
       itensCena.add(objetoJSON);
     }
     save['objetosCena'] = itensCena;
-    print(save);
+    // print(save);
     new File('saves/$save_name.json').writeAsStringSync(JSON.encode(save));
   }
 
@@ -276,7 +314,8 @@ class Game {
 
   /*Função que controla a desistência no jogo*/
   exit_game() {
-    stdout.write("Deseja mesmo sair agora? Todo progresso não salvo será perdido...");
+    stdout.write(
+        "Deseja mesmo sair agora? Todo progresso não salvo será perdido... (S) ou (N)");
     stdout.write("\n/> ");
     String get_out = stdin.readLineSync();
     if (get_out == "S" || get_out == 's') {
@@ -285,5 +324,15 @@ class Game {
     } else {
       return;
     }
+  }
+
+  printStory() {
+    print(
+        '\n Essa história conta sobre acasos da vida de um jovem estudante universitário chamado Bill. Ele, como todo universitário, passa por vários perrengues durante sua vida acadêmica: provas, trabalhos, vida longe da família, etc.  Bill estava repleto de provas e trabalhos, devido ao final do seu primeiro semestre na faculdade. Professores não paravam de passar novos trabalhos, os já existentes estavam atrasados, provas complicadas estavam chegando. Ele precisava ficar acordado...\n (aaaah pequeno detalhe. AS frases em parênteses são pensamentos do narrador, ou programador no caso. Vai que a ideia fica legal) \n\n');
+  }
+
+  end_game(){
+    print("Obrigada por jogar e tentar entender a história!");
+    exit(0);
   }
 }

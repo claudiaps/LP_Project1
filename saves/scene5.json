@@ -1,0 +1,21 @@
+{
+    "cenaAtual": 6,
+    "inventario": [
+        "meia",
+        "poster"
+    ],
+    "objetosCena": [
+        {
+            "idObject": 1,
+            "type": 0,
+            "objectName": "porta",
+            "objectDescription": "Porta dos fundos do bar. Talvez tenha alguma coisa interessante lá, talvez não. Quem sabe?",
+            "positiveResult": "Bill entra pela porta suspeita",
+            "negativeResult": "Ah, não funcionou",
+            "correctCommand": "use porta",
+            "targetScene": 7,
+            "solved": false,
+            "got": false
+        }
+    ]
+}
